@@ -135,37 +135,36 @@ export class Game {
         if (this.inPenaltyBox[this.currentPlayer]) {
             if (this.isGettingOutOfPenaltyBox) {
               console.log('Answer was correct!!!!');
-              this.purses[this.currentPlayer] += 1;
-              console.log(this.getCurrentPlayer() + " now has " +
-              this.purses[this.currentPlayer] + " Gold Coins.");
+              this.addCoin();
       
               var winner = this.didPlayerWin();
-              this.currentPlayer += 1;
-              if (this.currentPlayer == this.players.length)
-                this.currentPlayer = 0;
+              this.nextPlayer();
       
               return winner;
             } else {
-              this.currentPlayer += 1;
-              if (this.currentPlayer == this.players.length)
-                this.currentPlayer = 0;
+              this.nextPlayer();
               return true;
             }
           } else {
             console.log("Answer was corrent!!!!");
       
-            this.purses[this.currentPlayer] += 1;
-            console.log(this.getCurrentPlayer() + " now has " +
-                this.purses[this.currentPlayer] + " Gold Coins.");
-      
+            this.addCoin();
             var winner = this.didPlayerWin();
       
-            this.currentPlayer += 1;
-            if (this.currentPlayer == this.players.length)
-                this.currentPlayer = 0;
-      
+            this.nextPlayer();
             return winner;
           }
     }
 
+    private addCoin(coins: number = 1): void {
+        this.purses[this.currentPlayer] += coins;
+        console.log(this.getCurrentPlayer() + " now has " +
+            this.purses[this.currentPlayer] + " Gold Coins.");
+    }
+
+    private nextPlayer(): void {
+        this.currentPlayer += 1;
+        if (this.currentPlayer == this.players.length)
+            this.currentPlayer = 0;
+    }
 }
