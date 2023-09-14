@@ -6,23 +6,15 @@ type Category = typeof categories[number];
 type Categories = Map<Category, Questions>;
 
 class Player {
-    name: string;
-    place: number;
-    purse: number;
-    inPenaltyBox: boolean;
+    constructor(
+        public name: string,
+        public place: number = 0,
+        public purse: number = 0,
+        public inPenaltyBox: boolean = false
+    ) {}
 
-    constructor(name: string, place: number = 0, purse: number = 0, inPenaltyBox: boolean = false) {
-        this.name = name;
-        this.place = place;
-        this.purse = purse;
-        this.inPenaltyBox = inPenaltyBox;
-    }
-
-    public move = (roll: number) => {
-        this.place += roll;
-        if (this.place > 11) {
-            this.place -= 12;
-        }
+    public move(roll: number) {
+        this.place = (this.place + roll) % 12;
     }
 };
 
