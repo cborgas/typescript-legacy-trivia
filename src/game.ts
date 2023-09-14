@@ -95,25 +95,12 @@ export class Game {
     }
 
     private currentCategory(): Category {
-        if (this.getCurrentPlace() == 0)
-            return 'Pop';
-        if (this.getCurrentPlace() == 4)
-            return 'Pop';
-        if (this.getCurrentPlace() == 8)
-            return 'Pop';
-        if (this.getCurrentPlace() == 1)
-            return 'Science';
-        if (this.getCurrentPlace() == 5)
-            return 'Science';
-        if (this.getCurrentPlace() == 9)
-            return 'Science';
-        if (this.getCurrentPlace() == 2)
-            return 'Sports';
-        if (this.getCurrentPlace() == 6)
-            return 'Sports';
-        if (this.getCurrentPlace() == 10)
-            return 'Sports';
-        return 'Rock';
+        const index = this.getCurrentPlace() % categories.length;
+        if (categories[index] == undefined) {
+            return 'Rock';
+        } 
+
+        return categories[index];
     }
 
     private didPlayerWin(): boolean {
@@ -125,9 +112,7 @@ export class Game {
         console.log(this.getCurrentPlayer() + " was sent to the penalty box");
         this.inPenaltyBox[this.currentPlayer] = true;
     
-        this.currentPlayer += 1;
-        if (this.currentPlayer == this.players.length)
-            this.currentPlayer = 0;
+        this.nextPlayer();
         return true;
     }
 
@@ -135,8 +120,8 @@ export class Game {
         if (this.inPenaltyBox[this.currentPlayer]) {
             if (this.isGettingOutOfPenaltyBox) {
               console.log('Answer was correct!!!!');
+
               this.addCoin();
-      
               var winner = this.didPlayerWin();
               this.nextPlayer();
       
@@ -150,8 +135,8 @@ export class Game {
       
             this.addCoin();
             var winner = this.didPlayerWin();
-      
             this.nextPlayer();
+
             return winner;
           }
     }

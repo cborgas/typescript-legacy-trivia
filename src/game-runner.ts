@@ -7,15 +7,14 @@ export class GameRunner {
         game.add("Pat");
         game.add("Sue");
 
-        let notAWinner;
+        let notAWinner: boolean;
         do {
-
             game.roll(Math.floor(random() * 6) + 1);
         
             if (Math.floor(random() * 10) == 7) {
-            notAWinner = game.wrongAnswer();
+                notAWinner = game.wrongAnswer();
             } else {
-            notAWinner = game.wasCorrectlyAnswered();
+                notAWinner = game.wasCorrectlyAnswered();
             }
         
         } while (notAWinner);
