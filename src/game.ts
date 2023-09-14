@@ -1,3 +1,10 @@
+class Questions extends Array<string> {
+}
+const categories = ['Pop', 'Science', 'Sports', 'Rock'] as const;
+type Category = typeof categories[number];
+
+type Categories = Map<Category, Questions>;
+
 export class Game {
 
     private players: Array<string> = [];
@@ -7,23 +14,18 @@ export class Game {
     private currentPlayer: number = 0;
     private isGettingOutOfPenaltyBox: boolean = false;
 
-    private popQuestions: Array<string> = [];
-    private scienceQuestions: Array<string> = [];
-    private sportsQuestions: Array<string> = [];
-    private rockQuestions: Array<string> = [];
+    private categories: Categories = new Map<Category, Questions>();
 
     constructor() {
+        categories.forEach((category) => {
+            this.categories.set(category, []);
+        });
 
         for (let i = 0; i < 50; i++) {
-            this.popQuestions.push("Pop Question " + i);
-            this.scienceQuestions.push("Science Question " + i);
-            this.sportsQuestions.push("Sports Question " + i);
-            this.rockQuestions.push(this.createRockQuestion(i));
+            this.categories.forEach((questions, category) => {
+                questions.push(`${category} Question ${i}`);
+            });
           }
-    }
-
-    private createRockQuestion(index: number): string {
-        return "Rock Question " + index;
     }
 
     public add(name: string): boolean {
@@ -77,17 +79,10 @@ export class Game {
     }
 
     private askQuestion(): void {
-        if (this.currentCategory() == 'Pop')
-            console.log(this.popQuestions.shift());
-        if (this.currentCategory() == 'Science')
-            console.log(this.scienceQuestions.shift());
-        if (this.currentCategory() == 'Sports')
-            console.log(this.sportsQuestions.shift());
-        if (this.currentCategory() == 'Rock')
-            console.log(this.rockQuestions.shift());
+        console.log(this.categories.get(this.currentCategory())?.shift());
     }
 
-    private currentCategory(): string {
+    private currentCategory(): Category {
         if (this.places[this.currentPlayer] == 0)
             return 'Pop';
         if (this.places[this.currentPlayer] == 4)
