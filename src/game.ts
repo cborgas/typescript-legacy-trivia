@@ -34,7 +34,7 @@ export class Game {
           }
     }
 
-    public addPlayer(name: string): boolean {
+    public addPlayer(name: string): void {
         this.players.push({name});
         this.places[this.players.length] = 0;
         this.purses[this.players.length] = 0;
@@ -42,8 +42,6 @@ export class Game {
 
         console.log(name + " was added");
         console.log("They are player number " + this.players.length);
-
-        return true;
     }
 
     public roll(roll: number) {
