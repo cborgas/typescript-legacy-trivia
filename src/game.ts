@@ -140,15 +140,11 @@ export class Game {
               this.purses[this.currentPlayer] + " Gold Coins.");
       
               var winner = this.didPlayerWin();
-              this.currentPlayer += 1;
-              if (this.currentPlayer == this.players.length)
-                this.currentPlayer = 0;
+              this.nextPlayer();
       
               return winner;
             } else {
-              this.currentPlayer += 1;
-              if (this.currentPlayer == this.players.length)
-                this.currentPlayer = 0;
+              this.nextPlayer();
               return true;
             }
           } else {
@@ -160,12 +156,15 @@ export class Game {
       
             var winner = this.didPlayerWin();
       
-            this.currentPlayer += 1;
-            if (this.currentPlayer == this.players.length)
-                this.currentPlayer = 0;
+            this.nextPlayer();
       
             return winner;
           }
     }
 
+    private nextPlayer(): void {
+        this.currentPlayer += 1;
+        if (this.currentPlayer == this.players.length)
+            this.currentPlayer = 0;
+    }
 }
