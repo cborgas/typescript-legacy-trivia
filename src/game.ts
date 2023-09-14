@@ -6,7 +6,6 @@ type Category = typeof categories[number];
 type Categories = Map<Category, Questions>;
 
 export class Game {
-
     private players: Array<string> = [];
     private places: Array<number> = [];
     private purses: Array<number> = [];
@@ -58,8 +57,6 @@ export class Game {
               this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12;
             }
     
-            console.log(this.players[this.currentPlayer] + "'s new location is " + this.places[this.currentPlayer]);
-            console.log("The category is " + this.currentCategory());
             this.askQuestion();
           } else {
             console.log(this.players[this.currentPlayer] + " is not getting out of the penalty box");
@@ -72,13 +69,13 @@ export class Game {
             this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12;
           }
     
-          console.log(this.players[this.currentPlayer] + "'s new location is " + this.places[this.currentPlayer]);
-          console.log("The category is " + this.currentCategory());
           this.askQuestion();
         }
     }
 
     private askQuestion(): void {
+        console.log(this.players[this.currentPlayer] + "'s new location is " + this.places[this.currentPlayer]);
+        console.log("The category is " + this.currentCategory());
         console.log(this.categories.get(this.currentCategory())?.shift());
     }
 
