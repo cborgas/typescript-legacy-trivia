@@ -93,7 +93,7 @@ describe('The game', () => {
             "The category is Science",
             "Science Question 0",
             "Answer was correct!!!!",
-            "Pat now has NaN Gold Coins.",
+            "Pat now has 1 Gold Coins.",
         ]);
     });
 });

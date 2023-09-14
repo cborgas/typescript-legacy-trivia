@@ -7,17 +7,18 @@ export class GameRunner {
         game.addPlayer("Pat");
         game.addPlayer("Sue");
 
-        let notAWinner: boolean;
+        let continuePlaying: boolean;
         do {
+            continuePlaying = true;
             game.roll(Math.floor(random() * 6) + 1);
         
             if (Math.floor(random() * 10) == 7) {
-                notAWinner = game.wrongAnswer();
+                game.wrongAnswer();
             } else {
-                notAWinner = game.wasCorrectlyAnswered();
+                continuePlaying = game.wasCorrectlyAnswered();
             }
         
-        } while (notAWinner);
+        } while (continuePlaying);
     }
 }
 

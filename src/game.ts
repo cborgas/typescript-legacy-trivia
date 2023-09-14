@@ -5,17 +5,29 @@ type Category = typeof categories[number];
 
 type Categories = Map<Category, Questions>;
 
-type Player = {
+class Player {
     name: string;
     place: number;
-    // purse: number;
-    // inPenaltyBox: boolean;
+    purse: number;
+    inPenaltyBox: boolean;
+
+    constructor(name: string, place: number = 0, purse: number = 0, inPenaltyBox: boolean = false) {
+        this.name = name;
+        this.place = place;
+        this.purse = purse;
+        this.inPenaltyBox = inPenaltyBox;
+    }
+
+    public move = (roll: number) => {
+        this.place += roll;
+        if (this.place > 11) {
+            this.place -= 12;
+        }
+    }
 };
 
 export class Game {
     private players: Array<Player> = [];
-    private purses: Array<number> = [];
-    private inPenaltyBox: Array<boolean> = [];
     private currentPlayer: number = 0;
     private isGettingOutOfPenaltyBox: boolean = false;
 
@@ -34,41 +46,33 @@ export class Game {
     }
 
     public addPlayer(name: string): void {
-        this.players.push({name, place: 0});
-        this.purses[this.players.length] = 0;
-        this.inPenaltyBox[this.players.length] = false;
+        this.players.push(new Player(name));
 
         console.log(name + " was added");
         console.log("They are player number " + this.players.length);
     }
 
     public roll(roll: number) {
-        console.log(this.getCurrentPlayer().name + " is the current player");
+        const player = this.getCurrentPlayer();
+        console.log(player.name + " is the current player");
         console.log("They have rolled a " + roll);
     
-        if (this.inPenaltyBox[this.currentPlayer]) {
+        if (player.inPenaltyBox) {
           if (roll % 2 != 0) {
             this.isGettingOutOfPenaltyBox = true;
     
-            console.log(this.getCurrentPlayer().name + " is getting out of the penalty box");
-            this.move(roll);
+            console.log(player.name + " is getting out of the penalty box");
+            player.move(roll);
     
             this.askQuestion();
           } else {
-            console.log(this.getCurrentPlayer().name + " is not getting out of the penalty box");
+            console.log(player.name + " is not getting out of the penalty box");
             this.isGettingOutOfPenaltyBox = false;
           }
         } else {
     
-          this.move(roll);
+          player.move(roll);
           this.askQuestion();
-        }
-    }
-
-    private move(roll: number) {
-        this.getCurrentPlayer().place += roll;
-        if (this.getCurrentPlace() > 11) {
-            this.getCurrentPlayer().place -= 12;
         }
     }
 
@@ -95,48 +99,39 @@ export class Game {
         return categories[index];
     }
 
-    private checkIfPlayerHasWon(): boolean {
-        return !(this.purses[this.currentPlayer] == 6)
+    private checkIfPlayerHasWon(player: Player): boolean {
+        return !(player.purse == 6)
     }
 
-    public wrongAnswer(): boolean {
+    public wrongAnswer(): void {
         console.log('Question was incorrectly answered');
         console.log(this.getCurrentPlayer().name + " was sent to the penalty box");
-        this.inPenaltyBox[this.currentPlayer] = true;
+        this.getCurrentPlayer().inPenaltyBox = true;
     
         this.nextPlayer();
-        return true;
     }
 
     public wasCorrectlyAnswered(): boolean {
-        if (this.inPenaltyBox[this.currentPlayer]) {
-            if (this.isGettingOutOfPenaltyBox) {
-              console.log('Answer was correct!!!!');
+        const player = this.getCurrentPlayer();
 
-              this.addCoin();
-              var winner = this.checkIfPlayerHasWon();
-              this.nextPlayer();
-      
-              return winner;
-            } else {
-              this.nextPlayer();
-              return true;
-            }
-          } else {
-            console.log("Answer was correct!!!!");
-      
-            this.addCoin();
-            var winner = this.checkIfPlayerHasWon();
+        if (player.inPenaltyBox && !this.isGettingOutOfPenaltyBox) {
             this.nextPlayer();
+            return true;
+        }
 
-            return winner;
-          }
+        console.log("Answer was correct!!!!");
+      
+        this.addCoin(player);
+        var winner = this.checkIfPlayerHasWon(player);
+        this.nextPlayer();
+
+        return winner;
     }
 
-    private addCoin(coins: number = 1): void {
-        this.purses[this.currentPlayer] += coins;
-        console.log(this.getCurrentPlayer().name + " now has " +
-            this.purses[this.currentPlayer] + " Gold Coins.");
+    private addCoin(player: Player, coins: number = 1): void {
+        player.purse += coins;
+        console.log(player.name + " now has " +
+            player.purse + " Gold Coins.");
     }
 
     private nextPlayer(): void {
