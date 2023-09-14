@@ -7,14 +7,13 @@ type Categories = Map<Category, Questions>;
 
 type Player = {
     name: string;
-    // place: number;
+    place: number;
     // purse: number;
     // inPenaltyBox: boolean;
 };
 
 export class Game {
     private players: Array<Player> = [];
-    private places: Array<number> = [];
     private purses: Array<number> = [];
     private inPenaltyBox: Array<boolean> = [];
     private currentPlayer: number = 0;
@@ -35,8 +34,7 @@ export class Game {
     }
 
     public addPlayer(name: string): void {
-        this.players.push({name});
-        this.places[this.players.length] = 0;
+        this.players.push({name, place: 0});
         this.purses[this.players.length] = 0;
         this.inPenaltyBox[this.players.length] = false;
 
@@ -45,19 +43,19 @@ export class Game {
     }
 
     public roll(roll: number) {
-        console.log(this.getCurrentPlayer() + " is the current player");
+        console.log(this.getCurrentPlayer().name + " is the current player");
         console.log("They have rolled a " + roll);
     
         if (this.inPenaltyBox[this.currentPlayer]) {
           if (roll % 2 != 0) {
             this.isGettingOutOfPenaltyBox = true;
     
-            console.log(this.getCurrentPlayer() + " is getting out of the penalty box");
+            console.log(this.getCurrentPlayer().name + " is getting out of the penalty box");
             this.move(roll);
     
             this.askQuestion();
           } else {
-            console.log(this.getCurrentPlayer() + " is not getting out of the penalty box");
+            console.log(this.getCurrentPlayer().name + " is not getting out of the penalty box");
             this.isGettingOutOfPenaltyBox = false;
           }
         } else {
@@ -68,22 +66,22 @@ export class Game {
     }
 
     private move(roll: number) {
-        this.places[this.currentPlayer] = this.getCurrentPlace() + roll;
+        this.getCurrentPlayer().place += roll;
         if (this.getCurrentPlace() > 11) {
-            this.places[this.currentPlayer] = this.getCurrentPlace() - 12;
+            this.getCurrentPlayer().place -= 12;
         }
     }
 
-    private getCurrentPlayer() {
-        return this.players[this.currentPlayer].name;
+    private getCurrentPlayer(): Player {
+        return this.players[this.currentPlayer];
     }
 
-    private getCurrentPlace() {
-        return this.places[this.currentPlayer];
+    private getCurrentPlace(): number {
+        return this.getCurrentPlayer().place;
     }
 
     private askQuestion(): void {
-        console.log(this.getCurrentPlayer() + "'s new location is " + this.getCurrentPlace());
+        console.log(this.getCurrentPlayer().name + "'s new location is " + this.getCurrentPlace());
         console.log("The category is " + this.getCurrentCategory());
         console.log(this.categories.get(this.getCurrentCategory())?.shift());
     }
@@ -103,7 +101,7 @@ export class Game {
 
     public wrongAnswer(): boolean {
         console.log('Question was incorrectly answered');
-        console.log(this.getCurrentPlayer() + " was sent to the penalty box");
+        console.log(this.getCurrentPlayer().name + " was sent to the penalty box");
         this.inPenaltyBox[this.currentPlayer] = true;
     
         this.nextPlayer();
@@ -137,7 +135,7 @@ export class Game {
 
     private addCoin(coins: number = 1): void {
         this.purses[this.currentPlayer] += coins;
-        console.log(this.getCurrentPlayer() + " now has " +
+        console.log(this.getCurrentPlayer().name + " now has " +
             this.purses[this.currentPlayer] + " Gold Coins.");
     }
 

@@ -57,9 +57,9 @@ describe('The game', () => {
             "They are player number 1",
             "Pat is the current player",
             "They have rolled a 1",
-            "Pat's new location is NaN",
-            "The category is Rock",
-            "Rock Question 0"
+            "Pat's new location is 1",
+            "The category is Science",
+            "Science Question 0",
         ]);
     });
 
@@ -89,9 +89,9 @@ describe('The game', () => {
             "They are player number 1",
             "Pat is the current player",
             "They have rolled a 1",
-            "Pat's new location is NaN",
-            "The category is Rock",
-            "Rock Question 0",
+            "Pat's new location is 1",
+            "The category is Science",
+            "Science Question 0",
             "Answer was correct!!!!",
             "Pat now has NaN Gold Coins.",
         ]);
