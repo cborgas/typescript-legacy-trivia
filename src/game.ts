@@ -34,20 +34,16 @@ export class Game {
           }
     }
 
-    public add(name: string): boolean {
+    public addPlayer(name: string): boolean {
         this.players.push({name});
-        this.places[this.howManyPlayers()] = 0;
-        this.purses[this.howManyPlayers()] = 0;
-        this.inPenaltyBox[this.howManyPlayers()] = false;
+        this.places[this.players.length] = 0;
+        this.purses[this.players.length] = 0;
+        this.inPenaltyBox[this.players.length] = false;
 
         console.log(name + " was added");
         console.log("They are player number " + this.players.length);
 
         return true;
-    }
-
-    private howManyPlayers(): number {
-        return this.players.length;
     }
 
     public roll(roll: number) {
@@ -90,11 +86,11 @@ export class Game {
 
     private askQuestion(): void {
         console.log(this.getCurrentPlayer() + "'s new location is " + this.getCurrentPlace());
-        console.log("The category is " + this.currentCategory());
-        console.log(this.categories.get(this.currentCategory())?.shift());
+        console.log("The category is " + this.getCurrentCategory());
+        console.log(this.categories.get(this.getCurrentCategory())?.shift());
     }
 
-    private currentCategory(): Category {
+    private getCurrentCategory(): Category {
         const index = this.getCurrentPlace() % categories.length;
         if (categories[index] == undefined) {
             return 'Rock';
@@ -103,7 +99,7 @@ export class Game {
         return categories[index];
     }
 
-    private didPlayerWin(): boolean {
+    private checkIfPlayerHasWon(): boolean {
         return !(this.purses[this.currentPlayer] == 6)
     }
 
@@ -122,7 +118,7 @@ export class Game {
               console.log('Answer was correct!!!!');
 
               this.addCoin();
-              var winner = this.didPlayerWin();
+              var winner = this.checkIfPlayerHasWon();
               this.nextPlayer();
       
               return winner;
@@ -134,7 +130,7 @@ export class Game {
             console.log("Answer was corrent!!!!");
       
             this.addCoin();
-            var winner = this.didPlayerWin();
+            var winner = this.checkIfPlayerHasWon();
             this.nextPlayer();
 
             return winner;
