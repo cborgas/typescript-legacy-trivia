@@ -16,6 +16,10 @@ class Player {
     public move(roll: number) {
         this.place = (this.place + roll) % 12;
     }
+
+    public isWinner(): boolean {
+        return !(this.purse == 6)
+    }
 };
 
 export class Game {
@@ -91,10 +95,6 @@ export class Game {
         return categories[index];
     }
 
-    private checkIfPlayerHasWon(player: Player): boolean {
-        return !(player.purse == 6)
-    }
-
     public wrongAnswer(): void {
         console.log('Question was incorrectly answered');
         console.log(this.getCurrentPlayer().name + " was sent to the penalty box");
@@ -114,10 +114,9 @@ export class Game {
         console.log("Answer was correct!!!!");
       
         this.addCoin(player);
-        var winner = this.checkIfPlayerHasWon(player);
         this.nextPlayer();
 
-        return winner;
+        return player.isWinner();
     }
 
     private addCoin(player: Player, coins: number = 1): void {
