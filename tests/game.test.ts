@@ -92,7 +92,7 @@ describe('The game', () => {
             "Pat's new location is NaN",
             "The category is Rock",
             "Rock Question 0",
-            "Answer was corrent!!!!",
+            "Answer was correct!!!!",
             "Pat now has NaN Gold Coins.",
         ]);
     });

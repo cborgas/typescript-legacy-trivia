@@ -125,7 +125,7 @@ export class Game {
               return true;
             }
           } else {
-            console.log("Answer was corrent!!!!");
+            console.log("Answer was correct!!!!");
       
             this.addCoin();
             var winner = this.checkIfPlayerHasWon();
